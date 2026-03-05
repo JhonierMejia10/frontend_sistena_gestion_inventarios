@@ -74,7 +74,7 @@ api.interceptors.response.use(
 
         try {
             // Usar axios puro (no api) para evitar loop infinito con el interceptor
-            const { data } = await axios.post('http://localhost:8000/api/token/refresh/', {
+            const { data } = await axios.post(`${myBaseUrl}/api/token/refresh/`, {
                 refresh: refreshToken,
             });
 

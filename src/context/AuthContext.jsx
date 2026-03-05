@@ -3,6 +3,9 @@ import api from '../utils/api';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 
+const isDevelopment = import.meta.env.MODE === 'development';
+const baseUrl = isDevelopment ? import.meta.env.VITE_API_BASE_URL_LOCAL : import.meta.env.VITE_API_BASE_URL_DEPLOY;
+
 const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
@@ -37,7 +40,7 @@ export const AuthProvider = ({ children }) => {
                 } else if (refresh) {
                     // Access expirado pero tenemos refresh → intentar renovar
                     try {
-                        const { data } = await axios.post('http://localhost:8000/api/token/refresh/', {
+                        const { data } = await axios.post(`${baseUrl}/api/token/refresh/`, {
                             refresh,
                         });
                         localStorage.setItem('access_token', data.access);
