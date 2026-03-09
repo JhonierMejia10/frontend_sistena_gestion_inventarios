@@ -656,7 +656,7 @@ export default function OrdenesVenta() {
                                     <tbody className="divide-y divide-[#27272a]">
                                         {selectedOrder.items && selectedOrder.items.length > 0 ? (
                                             selectedOrder.items.map((item, idx) => (
-                                                <tr key={idx || item.id}>
+                                                <tr key={item.id || idx}>
                                                     <td className="px-4 py-3 text-white">
                                                         {productosMap[item.producto] || `Producto #${item.producto}`}
                                                     </td>

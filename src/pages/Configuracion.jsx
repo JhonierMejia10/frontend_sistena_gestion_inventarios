@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Settings, Tags, Warehouse, Users, CreditCard } from 'lucide-react';
+import { Settings, Tags, Warehouse, Users, CreditCard, Truck } from 'lucide-react';
 import Categorias from './Categorias';
 import Almacenes from './Almacenes';
 import Clientes from './Clientes';
 import Marcas from './Marcas';
 import MediosPago from './MediosPago';
+import Proveedores from './Proveedores';
 
 export default function Configuracion() {
     const [activeTab, setActiveTab] = useState('categorias');
@@ -15,6 +16,7 @@ export default function Configuracion() {
         { id: 'almacenes', label: 'Almacenes', icon: Warehouse },
         { id: 'clientes', label: 'Clientes', icon: Users },
         { id: 'mediospago', label: 'Medios de Pago', icon: CreditCard },
+        { id: 'proveedores', label: 'Proveedores', icon: Truck },
     ];
 
     return (
@@ -72,6 +74,11 @@ export default function Configuracion() {
                 {activeTab === 'mediospago' && (
                     <div className="animate-in slide-in-from-right-4 duration-300">
                         <MediosPago isConfigView={true} />
+                    </div>
+                )}
+                {activeTab === 'proveedores' && (
+                    <div className="animate-in slide-in-from-right-4 duration-300">
+                        <Proveedores isConfigView={true} />
                     </div>
                 )}
             </div>
