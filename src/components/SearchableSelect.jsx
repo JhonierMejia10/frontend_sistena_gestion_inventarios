@@ -82,8 +82,8 @@ export default function SearchableSelect({
 
     // Debounce search
     useEffect(() => {
-        if (staticOptions) {
-            // Filter locally
+        // If we don't have an apiEndpoint, filter locally using staticOptions
+        if (!apiEndpoint && staticOptions) {
             if (searchTerm) {
                 const filtered = staticOptions.filter(o =>
                     (o.nombre || o.name || '').toLowerCase().includes(searchTerm.toLowerCase())
@@ -95,14 +95,20 @@ export default function SearchableSelect({
             return;
         }
 
+        // If we have an apiEndpoint, fetch from the backend on search
         const delayDebounceFn = setTimeout(() => {
             if (isOpen) {
-                fetchOptions(searchTerm);
+                // If it's empty search and we have staticOptions, we can just use them to save a request
+                if (!searchTerm && staticOptions) {
+                    setOptions(staticOptions);
+                } else {
+                    fetchOptions(searchTerm);
+                }
             }
         }, 300);
 
         return () => clearTimeout(delayDebounceFn);
-    }, [searchTerm, isOpen, staticOptions]);
+    }, [searchTerm, isOpen, apiEndpoint, staticOptions]);
 
     // Close on outside click
     useEffect(() => {
