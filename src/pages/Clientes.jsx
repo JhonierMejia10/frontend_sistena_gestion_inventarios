@@ -3,6 +3,7 @@ import api from '../utils/api';
 import { Plus, Edit2, Trash2, Search } from 'lucide-react';
 import toast from 'react-hot-toast';
 import Modal from '../components/Modal';
+import SearchableSelect from '../components/SearchableSelect';
 
 export default function Clientes({ isConfigView = false }) {
     const [data, setData] = useState([]);
@@ -277,20 +278,14 @@ export default function Clientes({ isConfigView = false }) {
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-[#a1a1aa] mb-1">Tipo de Cliente</label>
-                        <select
+                        <SearchableSelect
+                            staticOptions={tiposCliente}
                             name="tipo_cliente"
-                            required
+                            required={true}
                             value={formData.tipo_cliente}
                             onChange={handleChange}
-                            className="w-full bg-[#1a1a1a] border border-[#27272a] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#10b981] subtle-transition"
-                        >
-                            <option value="" disabled>-- Selecciona un tipo --</option>
-                            {tiposCliente.map(tipo => (
-                                <option key={tipo.id} value={tipo.id}>
-                                    {tipo.nombre}
-                                </option>
-                            ))}
-                        </select>
+                            placeholder="-- Selecciona un tipo --"
+                        />
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                         <div>

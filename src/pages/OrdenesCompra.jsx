@@ -3,6 +3,7 @@ import { Eye, Plus, Trash2, ShoppingCart, PlusCircle, RefreshCw, Search } from '
 import api from '../utils/api';
 import toast from 'react-hot-toast';
 import Modal from '../components/Modal';
+import SearchableSelect from '../components/SearchableSelect';
 import { formatearMoneda } from '../utils/formatters';
 
 export default function OrdenesCompra() {
@@ -426,16 +427,15 @@ export default function OrdenesCompra() {
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className="block text-sm font-medium text-[#a1a1aa] mb-1">Proveedor</label>
-                            <select
+                            <SearchableSelect
+                                apiEndpoint="/api/v1/proveedores/"
+                                staticOptions={proveedores.length > 0 ? proveedores : null}
                                 name="proveedor"
-                                required
+                                required={true}
                                 value={formData.proveedor}
                                 onChange={handleFormChange}
-                                className="w-full bg-[#1a1a1a] border border-[#27272a] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#10b981] subtle-transition"
-                            >
-                                <option value="" disabled>-- Seleccione un proveedor --</option>
-                                {proveedores.map(p => <option key={p.id} value={p.id}>{p.nombre}</option>)}
-                            </select>
+                                placeholder="-- Seleccione un proveedor --"
+                            />
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-[#a1a1aa] mb-1">Fecha Esperada</label>
@@ -449,29 +449,26 @@ export default function OrdenesCompra() {
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-[#a1a1aa] mb-1">Almacén de Destino</label>
-                            <select
+                            <SearchableSelect
+                                apiEndpoint="/api/v1/almacenes/"
+                                staticOptions={almacenes.length > 0 ? almacenes : null}
                                 name="ubicacion_entrega"
-                                required
+                                required={true}
                                 value={formData.ubicacion_entrega}
                                 onChange={handleFormChange}
-                                className="w-full bg-[#1a1a1a] border border-[#27272a] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#10b981] subtle-transition"
-                            >
-                                <option value="" disabled>-- Seleccione un almacén --</option>
-                                {almacenes.map(a => <option key={a.id} value={a.id}>{a.nombre}</option>)}
-                            </select>
+                                placeholder="-- Seleccione un almacén --"
+                            />
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-[#a1a1aa] mb-1">Estado de la compra</label>
-                            <select
+                            <SearchableSelect
+                                staticOptions={estadosCompra}
                                 name="estado_compra"
-                                required
+                                required={true}
                                 value={formData.estado_compra}
                                 onChange={handleFormChange}
-                                className="w-full bg-[#1a1a1a] border border-[#27272a] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#10b981] subtle-transition"
-                            >
-                                <option value="" disabled>-- Seleccione estado logístico --</option>
-                                {estadosCompra.map(ec => <option key={ec.id} value={ec.id}>{ec.nombre}</option>)}
-                            </select>
+                                placeholder="-- Seleccione estado logístico --"
+                            />
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-[#a1a1aa] mb-1">Pago Inicial ($)</label>
@@ -487,16 +484,15 @@ export default function OrdenesCompra() {
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-[#a1a1aa] mb-1">Método de Pago</label>
-                            <select
+                            <SearchableSelect
+                                apiEndpoint="/api/v1/medios-de-pago/"
+                                staticOptions={metodosPago.length > 0 ? metodosPago : null}
                                 name="metodo_pago"
                                 value={formData.metodo_pago}
                                 onChange={handleFormChange}
-                                className="w-full bg-[#1a1a1a] border border-[#27272a] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#10b981] subtle-transition"
                                 disabled={Number(formData.pago_inicial) <= 0}
-                            >
-                                <option key="default" value="">{Number(formData.pago_inicial) > 0 ? "-- Seleccione método --" : "-- N/A --"}</option>
-                                {metodosPago.map((mp, idx) => <option key={mp.id || idx} value={mp.id}>{mp.nombre}</option>)}
-                            </select>
+                                placeholder={Number(formData.pago_inicial) > 0 ? "-- Seleccione método --" : "-- N/A --"}
+                            />
                         </div>
                     </div>
 
@@ -510,15 +506,14 @@ export default function OrdenesCompra() {
                         <div className="flex gap-3 mb-4 items-end bg-[#121212] p-4 rounded-xl border border-[#27272a]">
                             <div className="flex-1">
                                 <label className="block text-xs font-medium text-[#a1a1aa] mb-1">Producto</label>
-                                <select
+                                <SearchableSelect
+                                    apiEndpoint="/api/v1/productos/"
+                                    staticOptions={productos.length > 0 ? productos : null}
                                     name="producto"
                                     value={currentItem.producto}
                                     onChange={handleItemChange}
-                                    className="w-full bg-[#1a1a1a] border border-[#27272a] rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#10b981]"
-                                >
-                                    <option key="default" value="" disabled>Seleccionar...</option>
-                                    {productos.map((p, idx) => <option key={p.id || idx} value={p.id}>{p.nombre}</option>)}
-                                </select>
+                                    placeholder="Seleccionar..."
+                                />
                             </div>
                             <div className="w-24">
                                 <label className="block text-xs font-medium text-[#a1a1aa] mb-1">Cantidad</label>
@@ -726,15 +721,13 @@ export default function OrdenesCompra() {
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
                                         <label className="block text-xs font-medium text-[#a1a1aa] mb-1">Nuevo Estado</label>
-                                        <select
+                                        <SearchableSelect
+                                            staticOptions={estadosCompra}
+                                            name="editEstado"
                                             value={editEstado}
                                             onChange={(e) => setEditEstado(e.target.value)}
-                                            className="w-full bg-[#121212] border border-[#27272a] rounded-lg px-4 py-2 text-white text-sm focus:outline-none focus:border-[#3b82f6] subtle-transition"
-                                        >
-                                            {estadosCompra.map(ec => (
-                                                <option key={ec.id} value={ec.id}>{ec.nombre}</option>
-                                            ))}
-                                        </select>
+                                            placeholder="-- Seleccione estado logístico --"
+                                        />
                                     </div>
                                     <div>
                                         <label className="block text-xs font-medium text-[#a1a1aa] mb-1">Nota (opcional)</label>

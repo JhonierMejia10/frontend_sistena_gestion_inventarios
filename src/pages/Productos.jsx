@@ -3,6 +3,7 @@ import { MoreHorizontal, Plus, Edit2, Trash2, Search } from 'lucide-react';
 import api from '../utils/api';
 import toast from 'react-hot-toast';
 import Modal from '../components/Modal';
+import SearchableSelect from '../components/SearchableSelect';
 import { formatearMoneda } from '../utils/formatters';
 
 export default function Productos() {
@@ -330,49 +331,39 @@ export default function Productos() {
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className="block text-sm font-medium text-[#a1a1aa] mb-1">Categoría</label>
-                            <select
+                            <SearchableSelect
+                                apiEndpoint="/api/v1/categorias/"
+                                staticOptions={categorias.length > 0 ? categorias : null}
                                 name="categoria"
-                                required
+                                required={true}
                                 value={formData.categoria}
                                 onChange={handleChange}
-                                className="w-full bg-[#1a1a1a] border border-[#27272a] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#10b981] subtle-transition"
-                            >
-                                <option value="" disabled>-- Seleccionar --</option>
-                                {categorias.map(cat => (
-                                    <option key={cat.id} value={cat.id}>{cat.nombre}</option>
-                                ))}
-                            </select>
+                                placeholder="-- Seleccionar --"
+                            />
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-[#a1a1aa] mb-1">Tipo de Producto</label>
-                            <select
+                            <SearchableSelect
+                                staticOptions={tiposEstaticos}
                                 name="tipo_producto"
-                                required
+                                required={true}
                                 value={formData.tipo_producto}
                                 onChange={handleChange}
-                                className="w-full bg-[#1a1a1a] border border-[#27272a] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#10b981] subtle-transition"
-                            >
-                                <option value="" disabled>-- Seleccionar --</option>
-                                {tiposEstaticos.map(t => (
-                                    <option key={t.id} value={t.id}>{t.nombre}</option>
-                                ))}
-                            </select>
+                                placeholder="-- Seleccionar --"
+                            />
                         </div>
                     </div>
 
                     <div>
                         <label className="block text-sm font-medium text-[#a1a1aa] mb-1">Marca (Opcional)</label>
-                        <select
+                        <SearchableSelect
+                            apiEndpoint="/api/v1/marcas/"
+                            staticOptions={marcas.length > 0 ? marcas : null}
                             name="marca"
                             value={formData.marca}
                             onChange={handleChange}
-                            className="w-full bg-[#1a1a1a] border border-[#27272a] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#10b981] subtle-transition"
-                        >
-                            <option value="">-- Sin Marca --</option>
-                            {marcas.map(m => (
-                                <option key={m.id} value={m.id}>{m.nombre}</option>
-                            ))}
-                        </select>
+                            placeholder="-- Sin Marca --"
+                        />
                     </div>
 
                     {!editingItem && (
@@ -392,18 +383,15 @@ export default function Productos() {
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-[#a1a1aa] mb-1">Almacén de Ingreso</label>
-                                <select
+                                <SearchableSelect
+                                    apiEndpoint="/api/v1/almacenes/"
+                                    staticOptions={almacenes.length > 0 ? almacenes : null}
                                     name="almacen"
-                                    required
+                                    required={true}
                                     value={formData.almacen}
                                     onChange={handleChange}
-                                    className="w-full bg-[#1a1a1a] border border-[#27272a] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#10b981] subtle-transition"
-                                >
-                                    <option value="" disabled>-- Seleccionar --</option>
-                                    {almacenes.map(al => (
-                                        <option key={al.id} value={al.id}>{al.nombre}</option>
-                                    ))}
-                                </select>
+                                    placeholder="-- Seleccionar --"
+                                />
                             </div>
                         </div>
                     )}

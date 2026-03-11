@@ -3,6 +3,7 @@ import api from '../utils/api';
 import { Truck, RefreshCw, Eye, Search } from 'lucide-react';
 import toast from 'react-hot-toast';
 import Modal from '../components/Modal';
+import SearchableSelect from '../components/SearchableSelect';
 
 const ESTADO_COLORES = {
     'Preparando': { border: 'border-[#eab308]', text: 'text-[#eab308]', bg: 'bg-[#eab308]/10' },
@@ -269,15 +270,13 @@ export default function Pedidos() {
                                     <div className="grid grid-cols-2 gap-4">
                                         <div>
                                             <label className="block text-xs font-medium text-[#a1a1aa] mb-1">Nuevo Estado</label>
-                                            <select
+                                            <SearchableSelect
+                                                staticOptions={estados}
+                                                name="editEstado"
                                                 value={editEstado}
                                                 onChange={(e) => setEditEstado(e.target.value)}
-                                                className="w-full bg-[#121212] border border-[#27272a] rounded-lg px-4 py-2 text-white text-sm focus:outline-none focus:border-[#3b82f6] subtle-transition"
-                                            >
-                                                {estados.map(e => (
-                                                    <option key={e.id} value={e.id}>{e.nombre}</option>
-                                                ))}
-                                            </select>
+                                                placeholder="-- Seleccione estado --"
+                                            />
                                         </div>
                                         <div>
                                             <label className="block text-xs font-medium text-[#a1a1aa] mb-1">Observaciones</label>

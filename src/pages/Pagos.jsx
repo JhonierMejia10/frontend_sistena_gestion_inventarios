@@ -3,6 +3,7 @@ import api from '../utils/api';
 import { Plus, Trash2, Search } from 'lucide-react';
 import toast from 'react-hot-toast';
 import Modal from '../components/Modal';
+import SearchableSelect from '../components/SearchableSelect';
 import { formatearMoneda } from '../utils/formatters';
 
 export default function Pagos() {
@@ -319,34 +320,32 @@ export default function Pagos() {
                     {activeTab === 'ventas' ? (
                         <div>
                             <label className="block text-sm font-medium text-[#a1a1aa] mb-1">Orden de Venta</label>
-                            <select
+                            <SearchableSelect
+                                staticOptions={ordenesVenta.map(ov => ({
+                                    ...ov,
+                                    nombre: `Orden #${ov.id} (${ov.cliente ? (ov.cliente.nombre || ov.cliente) : 'Sin Cliente'})`
+                                }))}
                                 name="orden"
-                                required
+                                required={true}
                                 value={formData.orden}
                                 onChange={handleChange}
-                                className="w-full bg-[#1a1a1a] border border-[#27272a] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#10b981] subtle-transition"
-                            >
-                                <option key="default" value="" disabled>-- Seleccionar Orden --</option>
-                                {ordenesVenta.map((ov, i) => (
-                                    <option key={ov.id || i} value={ov.id}>Orden #{ov.id} ({ov.cliente ? (ov.cliente.nombre || ov.cliente) : 'Sin Cliente'})</option>
-                                ))}
-                            </select>
+                                placeholder="-- Seleccionar Orden --"
+                            />
                         </div>
                     ) : (
                         <div>
                             <label className="block text-sm font-medium text-[#a1a1aa] mb-1">Orden de Compra</label>
-                            <select
+                            <SearchableSelect
+                                staticOptions={ordenesCompra.map(oc => ({
+                                    ...oc,
+                                    nombre: `Compra #${oc.id} (${oc.proveedor ? (oc.proveedor.nombre || oc.proveedor) : 'Sin Proveedor'})`
+                                }))}
                                 name="orden_compra"
-                                required
+                                required={true}
                                 value={formData.orden_compra}
                                 onChange={handleChange}
-                                className="w-full bg-[#1a1a1a] border border-[#27272a] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#10b981] subtle-transition"
-                            >
-                                <option key="default" value="" disabled>-- Seleccionar Orden --</option>
-                                {ordenesCompra.map((oc, i) => (
-                                    <option key={oc.id || i} value={oc.id}>Compra #{oc.id} ({oc.proveedor ? (oc.proveedor.nombre || oc.proveedor) : 'Sin Proveedor'})</option>
-                                ))}
-                            </select>
+                                placeholder="-- Seleccionar Orden --"
+                            />
                         </div>
                     )}
 
@@ -366,18 +365,15 @@ export default function Pagos() {
 
                     <div>
                         <label className="block text-sm font-medium text-[#a1a1aa] mb-1">Medio de Pago</label>
-                        <select
+                        <SearchableSelect
+                            apiEndpoint="/api/v1/medios-de-pago/"
+                            staticOptions={mediosPago.length > 0 ? mediosPago : null}
                             name="metodo_pago"
-                            required
+                            required={true}
                             value={formData.metodo_pago}
                             onChange={handleChange}
-                            className="w-full bg-[#1a1a1a] border border-[#27272a] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#10b981] subtle-transition"
-                        >
-                            <option key="default" value="" disabled>-- Seleccionar Método --</option>
-                            {mediosPago.map((mp, i) => (
-                                <option key={mp.id || i} value={mp.id}>{mp.nombre}</option>
-                            ))}
-                        </select>
+                            placeholder="-- Seleccionar Método --"
+                        />
                     </div>
 
                     <div>
