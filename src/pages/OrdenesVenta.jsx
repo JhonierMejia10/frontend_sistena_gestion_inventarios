@@ -150,18 +150,27 @@ export default function OrdenesVenta() {
     const handleItemChange = (e) => {
         const { name, value } = e.target;
         setCurrentItem({ ...currentItem, [name]: value });
+    };
 
-        // Auto-fill price if product is selected
-        if (name === 'producto') {
-            const selectedProd = productos.find(p => p.id.toString() === value.toString());
-            if (selectedProd) {
-                setCurrentItem((prev) => ({
-                    ...prev,
-                    producto: value,
-                    precio_unitario: selectedProd.precio || ''
-                }));
+    // Called when a product is selected from the SearchableSelect with the full object
+    const handleProductoSelected = (productoObj) => {
+        // Add to productos array if not already present
+        setProductos(prev => {
+            if (!prev.find(p => String(p.id) === String(productoObj.id))) {
+                return [...prev, productoObj];
             }
-        }
+            return prev;
+        });
+        // Add to productosMap for display in cart table
+        setProductosMap(prev => ({
+            ...prev,
+            [productoObj.id]: productoObj.nombre || productoObj.name
+        }));
+        // Auto-fill unit price
+        setCurrentItem(prev => ({
+            ...prev,
+            precio_unitario: productoObj.precio || ''
+        }));
     };
 
     // Add item to cart list
@@ -485,6 +494,7 @@ export default function OrdenesVenta() {
                                     name="producto"
                                     value={currentItem.producto}
                                     onChange={handleItemChange}
+                                    onSelectOption={handleProductoSelected}
                                     placeholder="Seleccionar..."
                                 />
                             </div>

@@ -7,6 +7,7 @@ export default function SearchableSelect({
     staticOptions = null, // array of {id, nombre} if not fetching from API
     value,       // The current selected ID
     onChange,    // (name, value) => void
+    onSelectOption, // (option) => void — optional callback with full option object
     name,
     placeholder = '-- Seleccionar --',
     className = '',
@@ -126,6 +127,7 @@ export default function SearchableSelect({
     const handleSelect = (option) => {
         setSelectedOption(option);
         onChange({ target: { name, value: option.id } });
+        if (onSelectOption) onSelectOption(option);
         setIsOpen(false);
         setSearchTerm('');
     };
