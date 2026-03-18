@@ -108,7 +108,7 @@ export default function Movimientos() {
                                                 </div>
                                             </td>
                                             <td className="px-6 py-4 font-medium">
-                                                {productosMap[mov.producto] || (typeof mov.producto === 'object' ? mov.producto.nombre : mov.producto || '-')}
+                                                {mov.producto_nombre || productosMap[mov.producto] || (typeof mov.producto === 'object' ? mov.producto.nombre : mov.producto || '-')}
                                             </td>
                                             <td className="px-6 py-4 font-bold text-right text-white">
                                                 {isEntrada ? '+' : '-'}{mov.cantidad || mov.quantity || '0'}

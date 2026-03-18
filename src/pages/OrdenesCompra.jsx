@@ -563,7 +563,7 @@ export default function OrdenesCompra() {
                                         cartItems.map((item, idx) => (
                                             <tr key={idx} className="hover:bg-[#27272a] subtle-transition">
                                                 <td className="px-4 py-3 text-white">
-                                                    {productosMap[item.producto] || `Producto #${item.producto}`}
+                                                    {item.producto_nombre || productosMap[item.producto] || `Producto #${item.producto}`}
                                                 </td>
                                                 <td className="px-4 py-3 text-center text-[#a1a1aa]">{item.cantidad}</td>
                                                 <td className="px-4 py-3 text-right text-[#a1a1aa]">{formatearMoneda(item.precio_unitario)}</td>
@@ -681,7 +681,7 @@ export default function OrdenesCompra() {
                                             selectedOrder.items.map((item, idx) => (
                                                 <tr key={idx || item.id}>
                                                     <td className="px-4 py-3 text-white">
-                                                        {productosMap[item.producto] || `Producto #${item.producto}`}
+                                                        {item.producto_nombre || productosMap[item.producto] || `Producto #${item.producto}`}
                                                     </td>
                                                     <td className="px-4 py-3 text-center text-[#a1a1aa]">{item.cantidad}</td>
                                                     <td className="px-4 py-3 text-right text-[#a1a1aa]">{formatearMoneda(item.precio_unitario || item.precio)}</td>
