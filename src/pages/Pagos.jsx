@@ -321,6 +321,11 @@ export default function Pagos() {
                         <div>
                             <label className="block text-sm font-medium text-[#a1a1aa] mb-1">Orden de Venta</label>
                             <SearchableSelect
+                                apiEndpoint="/api/v1/ordenes-de-venta/?con_saldo=true"
+                                transformOption={(ov) => ({
+                                    ...ov,
+                                    nombre: `Orden #${ov.id} (${ov.cliente ? (ov.cliente.nombre || ov.cliente) : 'Sin Cliente'})`
+                                })}
                                 staticOptions={ordenesVenta.map(ov => ({
                                     ...ov,
                                     nombre: `Orden #${ov.id} (${ov.cliente ? (ov.cliente.nombre || ov.cliente) : 'Sin Cliente'})`
@@ -336,6 +341,11 @@ export default function Pagos() {
                         <div>
                             <label className="block text-sm font-medium text-[#a1a1aa] mb-1">Orden de Compra</label>
                             <SearchableSelect
+                                apiEndpoint="/api/v1/ordenes-de-compra/?con_saldo=true"
+                                transformOption={(oc) => ({
+                                    ...oc,
+                                    nombre: `Compra #${oc.id} (${oc.proveedor ? (oc.proveedor.nombre || oc.proveedor) : 'Sin Proveedor'})`
+                                })}
                                 staticOptions={ordenesCompra.map(oc => ({
                                     ...oc,
                                     nombre: `Compra #${oc.id} (${oc.proveedor ? (oc.proveedor.nombre || oc.proveedor) : 'Sin Proveedor'})`

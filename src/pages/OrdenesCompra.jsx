@@ -373,10 +373,10 @@ export default function OrdenesCompra() {
                                         </td>
                                         <td className="px-6 py-4 text-center">
                                             <span className={`px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wide border 
-                                                ${purchase.estado_pago === 1 || purchase.estado_pago?.nombre === 'Pagado' || purchase.estado_pago_nombre === 'Pagado' ? 'border-[#10b981] text-[#10b981]'
-                                                    : purchase.estado_pago === 2 || purchase.estado_pago?.nombre === 'Parcial' || purchase.estado_pago_nombre === 'Parcial' ? 'border-[#3b82f6] text-[#3b82f6]'
+                                                ${purchase.estado_pago_nombre === 'Completado' || purchase.estado_pago_nombre === 'Pagado' ? 'border-[#10b981] text-[#10b981]'
+                                                    : purchase.estado_pago_nombre === 'Abonado' || purchase.estado_pago_nombre === 'Parcial' ? 'border-[#3b82f6] text-[#3b82f6]'
                                                         : 'border-[#eab308] text-[#eab308]'}`}>
-                                                {purchase.estado_pago_nombre || (typeof purchase.estado_pago === 'object' ? purchase.estado_pago.nombre : (purchase.estado_pago === 1 ? 'Pagado' : purchase.estado_pago === 2 ? 'Parcial' : 'Pendiente'))}
+                                                {purchase.estado_pago_nombre || 'Pendiente'}
                                             </span>
                                         </td>
                                         <td className="px-6 py-4 text-center">

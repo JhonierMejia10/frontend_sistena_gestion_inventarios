@@ -5,6 +5,7 @@ import api from '../utils/api';
 export default function SearchableSelect({
     apiEndpoint, // e.g., '/api/v1/categorias/'
     staticOptions = null, // array of {id, nombre} if not fetching from API
+    transformOption = null, // (option) => transformedOption — optional transform for API results
     value,       // The current selected ID
     onChange,    // (name, value) => void
     onSelectOption, // (option) => void — optional callback with full option object
@@ -51,7 +52,9 @@ export default function SearchableSelect({
 
     const fetchSubItem = async (id) => {
         try {
-            const res = await api.get(`${apiEndpoint}${id}/`);
+            // Strip query params to build the detail URL (e.g., /api/v1/ordenes-de-venta/1/)
+            const basePath = apiEndpoint.split('?')[0];
+            const res = await api.get(`${basePath}${id}/`);
             if (res.data) {
                 setSelectedOption(res.data);
                 // Also add it to options if not present
@@ -71,9 +74,11 @@ export default function SearchableSelect({
         if (!apiEndpoint) return;
         setLoading(true);
         try {
-            const url = searchQuery ? `${apiEndpoint}?search=${searchQuery}` : apiEndpoint;
+            const separator = apiEndpoint.includes('?') ? '&' : '?';
+            const url = searchQuery ? `${apiEndpoint}${separator}search=${searchQuery}` : apiEndpoint;
             const res = await api.get(url);
-            setOptions(res.data.results || res.data || []);
+            const rawOptions = res.data.results || res.data || [];
+            setOptions(transformOption ? rawOptions.map(transformOption) : rawOptions);
         } catch (error) {
             console.error(`Error fetching options from ${apiEndpoint}:`, error);
         } finally {
@@ -84,7 +89,8 @@ export default function SearchableSelect({
     // Debounce search
     useEffect(() => {
         // If we don't have an apiEndpoint, filter locally using staticOptions
-        if (!apiEndpoint && staticOptions) {
+        if (!apiEndpoint) {
+            if (!staticOptions) return;
             if (searchTerm) {
                 const filtered = staticOptions.filter(o =>
                     (o.nombre || o.name || '').toLowerCase().includes(searchTerm.toLowerCase())
@@ -96,20 +102,15 @@ export default function SearchableSelect({
             return;
         }
 
-        // If we have an apiEndpoint, fetch from the backend on search
+        // If we have an apiEndpoint, ALWAYS fetch from the backend on search
         const delayDebounceFn = setTimeout(() => {
             if (isOpen) {
-                // If it's empty search and we have staticOptions, we can just use them to save a request
-                if (!searchTerm && staticOptions) {
-                    setOptions(staticOptions);
-                } else {
-                    fetchOptions(searchTerm);
-                }
+                fetchOptions(searchTerm);
             }
         }, 300);
 
         return () => clearTimeout(delayDebounceFn);
-    }, [searchTerm, isOpen, apiEndpoint, staticOptions]);
+    }, [searchTerm, isOpen, apiEndpoint]);
 
     // Close on outside click
     useEffect(() => {
